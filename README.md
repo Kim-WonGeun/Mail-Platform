@@ -11,6 +11,8 @@
 초기 모노레포 세팅 단계.
 
 현재는 `apps/web` 프론트엔드 애플리케이션부터 구성 중.
+`apps/api` Spring Boot API 서버는 기초 학습과 MVP API 구현을 위해 작은
+단일 서버로 시작.
 
 ## 기술 스택
 
@@ -37,6 +39,19 @@ mail-platform
 ```bash
 pnpm install
 pnpm dev
+```
+
+API 서버:
+
+```bash
+cd apps/api
+./gradlew bootRun
+```
+
+상태 확인:
+
+```bash
+curl http://127.0.0.1:8080/api/health
 ```
 
 ## 브랜치 전략

@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# 여러 Kubernetes YAML을 하나의 배포 묶음으로 관리합니다.
+# kubectl apply -k infra/k8s/base 로 아래 파일들을 한 번에 적용할 수 있습니다.
+# resources는 이 Kustomization에 포함할 YAML 파일 목록입니다.
+resources:
+  # mail-platform 전용 namespace를 먼저 만듭니다.
+  - namespace.yaml
+  # API 서버 실행과 내부 접근 주소를 정의합니다.
+  - api-deployment.yaml
+  - api-service.yaml
+  # 웹 서버 실행과 내부 접근 주소를 정의합니다.
+  - web-deployment.yaml
+  - web-service.yaml

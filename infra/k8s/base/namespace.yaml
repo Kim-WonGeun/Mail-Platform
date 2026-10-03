@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+# metadata는 이 Kubernetes 리소스의 이름, 라벨, 주석 같은 식별 정보를 담습니다.
+metadata:
+  # mail-platform 관련 Kubernetes 리소스를 한 공간에 묶습니다.
+  # 조회/삭제/권한/환경 분리를 namespace 단위로 관리할 수 있습니다.
+  name: mail-platform

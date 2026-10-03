@@ -1,0 +1,9 @@
+**/.git
+**/.gradle
+**/.next
+**/build
+**/node_modules
+**/out
+**/.DS_Store
+**/*.log
+

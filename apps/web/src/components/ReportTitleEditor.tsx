@@ -4,10 +4,18 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import PageHeader from "./PageHeader";
 
-export default function ReportTitleEditor() {
-  // 작성 중인 값과 제출해서 확정한 값을 따로 기억합니다.
+// 확정한 값과 변경 요청에 사용할 함수를 부모에게 받습니다.
+type ReportTitleEditorProps = {
+  appliedTitle: string;
+  onApplyTitle: (title: string) => void;
+};
+
+export default function ReportTitleEditor({
+  appliedTitle,
+  onApplyTitle,
+}: ReportTitleEditorProps) {
+  // 입력 중인 값과 오류는 이 컴포넌트에서만 필요하므로 그대로 관리합니다.
   const [draftTitle, setDraftTitle] = useState("");
-  const [appliedTitle, setAppliedTitle] = useState("");
   const [error, setError] = useState("");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -21,7 +29,8 @@ export default function ReportTitleEditor() {
       return;
     }
 
-    setAppliedTitle(trimmedTitle);
+    // 유효한 제목만 부모에게 전달해 확정 상태를 변경하도록 요청합니다.
+    onApplyTitle(trimmedTitle);
     setError("");
   }
 
