@@ -1,0 +1,6 @@
+[project]
+name = "mail-platform-agent-orchestrator"
+version = "0.1.0"
+description = "메일 분석 AI 에이전트 학습 및 실행 서비스"
+requires-python = ">=3.13,<3.14"
+dependencies = []
