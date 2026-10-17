@@ -12,3 +12,5 @@ resources:
   # 웹 서버 실행과 내부 접근 주소를 정의합니다.
   - web-deployment.yaml
   - web-service.yaml
+  # 로컬 Traefik Controller가 처리할 HTTP 경로 규칙입니다.
+  - ingress.yaml

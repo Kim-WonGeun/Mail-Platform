@@ -74,8 +74,10 @@ spec:
             # 스케줄링할 때 최소 이 정도 자원이 필요하다고 예약합니다.
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 512Mi
             # 컨테이너가 사용할 수 있는 최대 자원입니다.
             limits:
               cpu: 500m
-              memory: 512Mi
+              # 로컬 실행 중 OOMKilled가 발생해 상한을 올렸습니다.
+              # 실제 사용량을 관찰한 뒤 운영 환경에 맞게 조정합니다.
+              memory: 1Gi
