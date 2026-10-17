@@ -1,19 +1,20 @@
 "use client";
 
-// 화면 코드와 분리한 공통 양식 데이터를 가져옵니다.
-import { templates } from "../data/reportTemplates";
+import type { ReportTemplate } from "../lib/templateApi";
 
-// 부모가 선택 상태를 소유하고, 자식은 변경할 ID를 함수로 전달합니다.
+// 부모가 목록과 선택 상태를 소유하고, 자식은 받은 값을 그리고 변경할 ID를 함수로 전달합니다.
 type TemplateListProps = {
+  templates: ReportTemplate[];
   selectedTemplateId: string;
   onSelectTemplate: (templateId: string) => void;
 };
 
 export default function TemplateList({
+  templates,
   selectedTemplateId,
   onSelectTemplate,
 }: TemplateListProps) {
-  // 제목은 별도 state에 저장하지 않고, ID에 맞는 객체에서 읽습니다.
+  // 이름은 별도 state에 저장하지 않고, ID에 맞는 객체에서 읽습니다.
   const selectedTemplate = templates.find(
     (template) => template.id === selectedTemplateId,
   );
@@ -35,11 +36,16 @@ export default function TemplateList({
                 value={template.id}
                 checked={selectedTemplateId === template.id}
                 onChange={(event) => onSelectTemplate(event.target.value)}
-                aria-describedby={`${template.id}-description`}
+                aria-describedby={
+                  template.description ? `${template.id}-description` : undefined
+                }
               />
-              {template.title}
+              {template.name}
             </label>
-            <p id={`${template.id}-description`}>{template.description}</p>
+            {/* API에서 설명은 null일 수 있으므로 값이 있을 때만 표시합니다. */}
+            {template.description && (
+              <p id={`${template.id}-description`}>{template.description}</p>
+            )}
           </li>
         ))}
         </ul>
@@ -47,7 +53,7 @@ export default function TemplateList({
       {/* find 결과가 없을 수 있으므로 표시 전에 확인합니다. */}
       <p role="status">
         {selectedTemplate
-          ? `선택한 양식: ${selectedTemplate.title}`
+          ? `선택한 양식: ${selectedTemplate.name}`
           : "양식을 선택해 주세요."}
       </p>
     </section>
