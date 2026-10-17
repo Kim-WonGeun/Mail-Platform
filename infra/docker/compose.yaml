@@ -1,0 +1,30 @@
+# 로컬 개발용 인프라를 정의합니다. 지금은 PostgreSQL 하나만 실행합니다.
+name: mail-platform
+
+services:
+  postgres:
+    # 이미지는 설치본이고, 이 이미지를 실행한 것이 컨테이너입니다.
+    image: postgres:17
+    container_name: mail-platform-postgres
+    # 컨테이너가 처음 시작될 때 이 값으로 DB와 사용자를 만듭니다.
+    # 로컬 전용 값이며, 운영 환경에서는 Secret으로 관리합니다.
+    environment:
+      POSTGRES_DB: mail_platform
+      POSTGRES_USER: mail_platform
+      POSTGRES_PASSWORD: mail_platform
+    # 내 컴퓨터의 5432 포트를 컨테이너의 5432 포트에 연결합니다.
+    # 127.0.0.1로 제한해 같은 네트워크의 다른 기기에서는 접속할 수 없게 합니다.
+    ports:
+      - "127.0.0.1:5432:5432"
+    # 컨테이너를 지워도 데이터가 남도록 named volume에 저장합니다.
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    # DB가 접속을 받을 준비가 되었는지 주기적으로 확인합니다.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mail_platform -d mail_platform"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:

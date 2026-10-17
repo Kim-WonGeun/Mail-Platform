@@ -54,6 +54,20 @@ cd apps/api
 curl http://127.0.0.1:8080/api/health
 ```
 
+## 로컬 DB
+
+Docker로 PostgreSQL 17을 실행합니다. 접속 정보는 `infra/docker/compose.yaml`에
+있는 로컬 전용 값(`mail_platform`)입니다.
+
+```bash
+docker compose -f infra/docker/compose.yaml up -d --wait
+docker exec -it mail-platform-postgres psql -U mail_platform -d mail_platform
+docker compose -f infra/docker/compose.yaml down
+```
+
+`down`은 컨테이너만 지우고 데이터는 volume에 남깁니다. 데이터까지 지우려면
+`down -v`를 사용합니다.
+
 ## Python 에이전트 실행 환경
 
 Python 3.13.16과 uv를 사용합니다. 현재는 실행 환경과 샘플 메일 출력 예제가 구성되어 있습니다.

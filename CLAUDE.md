@@ -18,6 +18,7 @@
 apps/web                 프론트엔드
 apps/api                 Spring Boot 단일 API
 apps/agent-orchestrator  Python 에이전트
+infra/docker             로컬 PostgreSQL
 infra/k8s/base           Kubernetes 매니페스트
 docs                     설계 문서
 ```
@@ -25,6 +26,7 @@ docs                     설계 문서
 ## 명령어
 
 ```bash
+docker compose -f infra/docker/compose.yaml up -d --wait  # 로컬 PostgreSQL
 pnpm dev                                    # web 개발 서버
 pnpm --filter @mail-platform/web typecheck  # web 타입 검사
 cd apps/api && ./gradlew test               # api 테스트
