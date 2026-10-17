@@ -41,6 +41,9 @@ pnpm install
 pnpm dev
 ```
 
+web은 `/api` 요청을 `next.config.ts`의 rewrite로 API 서버(`127.0.0.1:8080`)에
+전달합니다. 양식 목록을 보려면 로컬 DB와 API 서버를 먼저 실행합니다.
+
 API 서버는 기본으로 `dev` 프로필(`application-dev.yml`)을 사용하므로, 먼저 아래
 "로컬 DB"를 실행합니다. 테스트는 Testcontainers가 PostgreSQL을 직접 띄우므로
 Docker만 실행 중이면 됩니다.
