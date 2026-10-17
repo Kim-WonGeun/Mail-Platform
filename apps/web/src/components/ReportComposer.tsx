@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { templates } from "../data/reportTemplates";
+import ReportSummary from "./ReportSummary";
 import ReportTitleEditor from "./ReportTitleEditor";
 import TemplateList from "./TemplateList";
 
@@ -9,6 +11,11 @@ export default function ReportComposer() {
   const [appliedTitle, setAppliedTitle] = useState("");
   // 양식 선택 상태를 공통 부모로 옮겨 한곳에서 관리합니다.
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
+
+  // 선택한 양식은 기존 ID로 계산하므로 별도 상태로 저장하지 않습니다.
+  const selectedTemplate = templates.find(
+    (template) => template.id === selectedTemplateId,
+  );
 
   return (
     <>
@@ -21,6 +28,11 @@ export default function ReportComposer() {
       <TemplateList
         selectedTemplateId={selectedTemplateId}
         onSelectTemplate={setSelectedTemplateId}
+      />
+      {/* 확정 제목과 양식 이름을 전달하고, 선택 전에는 빈 문자열을 사용합니다. */}
+      <ReportSummary
+        title={appliedTitle}
+        templateTitle={selectedTemplate?.title ?? ""}
       />
     </>
   );
