@@ -51,6 +51,25 @@ spec:
             - name: http
               # Spring Boot API가 컨테이너 안에서 사용하는 포트입니다.
               containerPort: 8080
+          # envFrom은 ConfigMap의 모든 key를 같은 이름의 환경 변수로 넣습니다.
+          # SPRING_PROFILES_ACTIVE, DB_URL이 컨테이너에 전달됩니다.
+          envFrom:
+            - configMapRef:
+                name: mail-platform-api
+          # env는 환경 변수를 하나씩 지정합니다.
+          # Secret의 key 이름(POSTGRES_USER)과 application.yml이 기대하는
+          # 이름(DB_USERNAME)이 달라서 secretKeyRef로 이름을 바꿔 연결합니다.
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mail-platform-postgres
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-platform-postgres
+                  key: POSTGRES_PASSWORD
           # readinessProbe는 "요청을 받을 준비가 됐는지" 확인하는 설정입니다.
           readinessProbe:
             # 준비 상태 확인입니다.

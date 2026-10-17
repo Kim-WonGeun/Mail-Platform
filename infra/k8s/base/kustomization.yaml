@@ -6,7 +6,12 @@ kind: Kustomization
 resources:
   # mail-platform 전용 namespace를 먼저 만듭니다.
   - namespace.yaml
-  # API 서버 실행과 내부 접근 주소를 정의합니다.
+  # PostgreSQL 접속 정보, 데이터 저장소, 내부 접근 주소를 정의합니다.
+  - postgres-secret.yaml
+  - postgres-statefulset.yaml
+  - postgres-service.yaml
+  # API 서버 설정, 실행, 내부 접근 주소를 정의합니다.
+  - api-configmap.yaml
   - api-deployment.yaml
   - api-service.yaml
   # 웹 서버 실행과 내부 접근 주소를 정의합니다.
