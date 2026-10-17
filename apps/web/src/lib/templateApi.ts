@@ -20,3 +20,25 @@ export async function fetchTemplates(
 
   return response.json();
 }
+
+// 양식 하나를 가져옵니다. 404는 "없는 양식"이라는 정상적인 결과이므로 null로 돌려줍니다.
+export async function fetchTemplate(
+  id: string,
+  signal?: AbortSignal,
+): Promise<ReportTemplate | null> {
+  // id에 /나 ? 같은 문자가 있어도 경로가 깨지지 않도록 인코딩합니다.
+  const response = await fetch(`/api/v1/templates/${encodeURIComponent(id)}`, {
+    signal,
+  });
+
+  // 형식이 잘못된 id(400)도 화면에서는 찾을 수 없는 양식으로 다룹니다.
+  if (response.status === 404 || response.status === 400) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`양식 요청 실패: ${response.status}`);
+  }
+
+  return response.json();
+}
