@@ -1,36 +1,13 @@
 "use client";
 
+// 화면 코드와 분리한 공통 양식 데이터를 가져옵니다.
+import { templates } from "../data/reportTemplates";
+
 // 부모가 선택 상태를 소유하고, 자식은 변경할 ID를 함수로 전달합니다.
 type TemplateListProps = {
   selectedTemplateId: string;
   onSelectTemplate: (templateId: string) => void;
 };
-
-// 양식 하나가 가진 데이터의 모양을 정의합니다.
-type ReportTemplate = {
-  id: string;
-  title: string;
-  description: string;
-};
-
-// 객체 하나가 양식 하나이며, 배열에 여러 양식을 모아 둡니다.
-const templates: ReportTemplate[] = [
-  {
-    id: "weekly-summary",
-    title: "주간 요약",
-    description: "한 주 동안의 주요 메일 정리",
-  },
-  {
-    id: "customer-inquiries",
-    title: "고객 문의 분석",
-    description: "고객 문의 유형과 주요 요청 정리",
-  },
-  {
-    id: "work-progress",
-    title: "업무 진행 현황",
-    description: "메일에서 진행 상황과 후속 작업 정리",
-  },
-];
 
 export default function TemplateList({
   selectedTemplateId,
