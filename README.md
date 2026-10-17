@@ -41,7 +41,9 @@ pnpm install
 pnpm dev
 ```
 
-API 서버:
+API 서버는 기본으로 `dev` 프로필(`application-dev.yml`)을 사용하므로, 먼저 아래
+"로컬 DB"를 실행합니다. 테스트는 Testcontainers가 PostgreSQL을 직접 띄우므로
+Docker만 실행 중이면 됩니다.
 
 ```bash
 cd apps/api
