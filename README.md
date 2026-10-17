@@ -56,12 +56,13 @@ curl http://127.0.0.1:8080/api/health
 
 ## Python 에이전트 실행 환경
 
-Python 3.13.16과 uv를 사용합니다. 현재는 실행 환경만 구성되어 있습니다.
+Python 3.13.16과 uv를 사용합니다. 현재는 실행 환경과 샘플 메일 출력 예제가 구성되어 있습니다.
 
 ```bash
 cd apps/agent-orchestrator
 uv sync
 uv run python --version
+uv run python main.py
 ```
 
 자세한 내용은 `apps/agent-orchestrator/README.md`를 참고합니다.
