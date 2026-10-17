@@ -2,6 +2,7 @@ package com.mailplatform.api.template;
 
 import com.mailplatform.api.template.dto.TemplateResponse;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,5 +24,13 @@ public class TemplateService {
                 .stream()
                 .map(TemplateResponse::from)
                 .toList();
+    }
+
+    // 목록과 같은 규칙으로 ACTIVE 양식만 조회하고, 없으면 404 예외를 던집니다.
+    @Transactional(readOnly = true)
+    public TemplateResponse findActiveTemplate(UUID id) {
+        return reportTemplateRepository.findByIdAndStatus(id, ReportTemplateStatus.ACTIVE)
+                .map(TemplateResponse::from)
+                .orElseThrow(() -> new TemplateNotFoundException(id));
     }
 }

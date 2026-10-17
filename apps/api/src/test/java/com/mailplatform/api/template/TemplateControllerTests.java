@@ -48,4 +48,35 @@ class TemplateControllerTests {
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[1].name").value("업무 진행 현황"));
     }
+
+    @Test
+    void returnsTemplateById() throws Exception {
+        mockMvc.perform(get("/api/v1/templates/00000000-0000-0000-0000-000000000002"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("고객 문의 분석"))
+                .andExpect(jsonPath("$.description").value("고객 문의 유형과 주요 요청 정리"));
+    }
+
+    @Test
+    void returnsNotFoundForUnknownId() throws Exception {
+        mockMvc.perform(get("/api/v1/templates/00000000-0000-0000-0000-000000000099"))
+                .andExpect(status().isNotFound());
+    }
+
+    // 목록에서 빠진 보관(ARCHIVED) 양식은 상세 조회에서도 찾을 수 없어야 합니다.
+    @Test
+    @Transactional
+    void returnsNotFoundForArchivedTemplate() throws Exception {
+        jdbcTemplate.update(
+                "update report_templates set status = 'ARCHIVED' where id = '00000000-0000-0000-0000-000000000002'");
+
+        mockMvc.perform(get("/api/v1/templates/00000000-0000-0000-0000-000000000002"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void returnsBadRequestForInvalidId() throws Exception {
+        mockMvc.perform(get("/api/v1/templates/not-a-uuid"))
+                .andExpect(status().isBadRequest());
+    }
 }

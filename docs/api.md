@@ -25,3 +25,13 @@
 | `id` | `string` (UUID) | 양식 ID |
 | `name` | `string` | 양식 이름 |
 | `description` | `string` \| `null` | 양식 설명 |
+
+### `GET /api/v1/templates/{id}`
+
+사용 가능한(`ACTIVE`) 양식 하나를 반환합니다. 응답 필드는 목록의 항목과 같습니다.
+
+| 상태 코드 | 설명 |
+| --- | --- |
+| `200 OK` | 양식을 찾았습니다. |
+| `400 Bad Request` | `id`가 UUID 형식이 아닙니다. |
+| `404 Not Found` | 양식이 없거나 `ACTIVE`가 아닙니다. |

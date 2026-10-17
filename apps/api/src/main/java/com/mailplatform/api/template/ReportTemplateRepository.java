@@ -1,6 +1,7 @@
 package com.mailplatform.api.template;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,4 +10,7 @@ public interface ReportTemplateRepository extends JpaRepository<ReportTemplate, 
 
     // 메서드 이름을 해석해 "where status = ? order by id asc" 쿼리를 만듭니다.
     List<ReportTemplate> findByStatusOrderByIdAsc(ReportTemplateStatus status);
+
+    // 결과가 없을 수 있으므로 null 대신 Optional로 감싸서 반환합니다.
+    Optional<ReportTemplate> findByIdAndStatus(UUID id, ReportTemplateStatus status);
 }
