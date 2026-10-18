@@ -1,5 +1,6 @@
 package com.mailplatform.api.template;
 
+import com.mailplatform.api.template.dto.TemplateDetailResponse;
 import com.mailplatform.api.template.dto.TemplateResponse;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class TemplateController {
 
     // {id} 자리의 값을 @PathVariable로 받습니다. UUID 형식이 아니면 Spring이 400으로 응답합니다.
     @GetMapping("/{id}")
-    public TemplateResponse getTemplate(@PathVariable UUID id) {
+    public TemplateDetailResponse getTemplate(@PathVariable UUID id) {
         return templateService.findActiveTemplate(id);
     }
 }

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchTemplate, type ReportTemplate } from "../lib/templateApi";
+import { fetchTemplate, type ReportTemplateDetail } from "../lib/templateApi";
+import TemplateSchemaView from "./TemplateSchemaView";
 
 type TemplateDetailProps = {
   templateId: string;
@@ -12,7 +13,7 @@ type TemplateDetailProps = {
 type LoadStatus = "loading" | "success" | "not-found" | "error";
 
 export default function TemplateDetail({ templateId }: TemplateDetailProps) {
-  const [template, setTemplate] = useState<ReportTemplate | null>(null);
+  const [template, setTemplate] = useState<ReportTemplateDetail | null>(null);
   const [loadStatus, setLoadStatus] = useState<LoadStatus>("loading");
 
   // 의존성 배열에 templateId를 넣으면, 다른 양식 주소로 바뀔 때 다시 요청합니다.
@@ -48,12 +49,23 @@ export default function TemplateDetail({ templateId }: TemplateDetailProps) {
         <p role="alert">양식을 불러오지 못했습니다. API 서버를 확인해 주세요.</p>
       )}
       {loadStatus === "success" && template && (
-        <dl>
-          <dt>이름</dt>
-          <dd>{template.name}</dd>
-          <dt>설명</dt>
-          <dd>{template.description ?? "설명이 없습니다"}</dd>
-        </dl>
+        <>
+          <dl>
+            <dt>이름</dt>
+            <dd>{template.name}</dd>
+            <dt>설명</dt>
+            <dd>{template.description ?? "설명이 없습니다"}</dd>
+            <dt>버전</dt>
+            <dd>{template.version === null ? "발행 전" : `v${template.version}`}</dd>
+          </dl>
+
+          {/* 스키마가 있을 때만 섹션·필드 구성을 보여줍니다. */}
+          {template.schema ? (
+            <TemplateSchemaView schema={template.schema} />
+          ) : (
+            <p>아직 발행된 양식 구성이 없습니다.</p>
+          )}
+        </>
       )}
     </section>
   );

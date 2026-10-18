@@ -1,0 +1,147 @@
+/*
+ * var(--pw-*, 기본값)은 디자인 토큰이 없을 때 뒤의 기본값을 씁니다.
+ * 토큰은 app/globals.css에 정의되어 있습니다.
+ */
+.schema {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-24, 24px);
+}
+
+/* dt(이름)와 dd(값)를 두 열 격자로 나란히 놓습니다. */
+.overview {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--pw-space-8, 8px) var(--pw-space-16, 16px);
+  margin: 0;
+}
+
+.overview dt {
+  color: var(--pw-muted, #6b6b66);
+}
+
+.overview dd {
+  margin: 0;
+}
+
+.variables {
+  margin: 0;
+  padding-left: var(--pw-space-16, 16px);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-16, 16px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.section {
+  padding: var(--pw-space-16, 16px);
+  border: 1px solid var(--pw-line, #e4e4df);
+  border-radius: var(--pw-radius, 8px);
+}
+
+.sectionTitle {
+  margin: 0 0 var(--pw-space-8, 8px);
+  font-size: 15px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-4, 4px);
+  padding: var(--pw-space-12, 12px) 0;
+}
+
+.field + .field {
+  border-top: 1px solid var(--pw-line, #e4e4df);
+}
+
+.fieldHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pw-space-8, 8px);
+}
+
+.fieldLabel {
+  font-weight: 600;
+}
+
+.badge,
+.required,
+.choice {
+  padding: 0 var(--pw-space-8, 8px);
+  border-radius: var(--pw-radius-round, 999px);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.badge,
+.choice {
+  background: var(--pw-soft, #f0f0ec);
+  color: var(--pw-muted, #6b6b66);
+}
+
+.required {
+  color: var(--pw-danger, #b4372b);
+  border: 1px solid currentColor;
+}
+
+.instructions,
+.meta {
+  margin: 0;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted, #6b6b66);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pw-space-4, 4px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.staticContent {
+  margin: 0;
+  padding: var(--pw-space-8, 8px) var(--pw-space-12, 12px);
+  border-left: 3px solid var(--pw-line, #e4e4df);
+  background: var(--pw-canvas, #f3f3f0);
+}
+
+/* 열이 많아 화면보다 넓어지면 표만 가로로 스크롤합니다. */
+.columns {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.columns th,
+.columns td {
+  padding: var(--pw-space-4, 4px) var(--pw-space-12, 12px);
+  border: 1px solid var(--pw-line, #e4e4df);
+  text-align: left;
+  vertical-align: top;
+}
+
+.columns th {
+  background: var(--pw-soft, #f0f0ec);
+  font-weight: 600;
+}

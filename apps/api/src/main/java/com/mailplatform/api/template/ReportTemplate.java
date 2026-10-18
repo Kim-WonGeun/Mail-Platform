@@ -27,6 +27,9 @@ public class ReportTemplate {
     @Column(nullable = false, length = 30)
     private ReportTemplateStatus status;
 
+    // 최신 발행 버전을 가리킵니다. 발행 전이면 null입니다.
+    private UUID currentVersionId;
+
     // JPA가 조회 결과로 객체를 만들 때 사용하는 기본 생성자입니다.
     protected ReportTemplate() {
     }
@@ -45,5 +48,9 @@ public class ReportTemplate {
 
     public ReportTemplateStatus getStatus() {
         return status;
+    }
+
+    public UUID getCurrentVersionId() {
+        return currentVersionId;
     }
 }
