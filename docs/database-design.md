@@ -27,8 +27,6 @@ erDiagram
   USERS ||--o{ ORGANIZATION_MEMBERS : joins
   ORGANIZATIONS ||--o{ REPORT_TEMPLATES : owns
   REPORT_TEMPLATES ||--o{ REPORT_TEMPLATE_VERSIONS : versions
-  REPORT_TEMPLATE_VERSIONS ||--o{ TEMPLATE_SECTIONS : contains
-  TEMPLATE_SECTIONS ||--o{ TEMPLATE_FIELDS : contains
   ORGANIZATIONS ||--o{ MAIL_SOURCES : connects
   MAIL_SOURCES ||--o{ MAIL_MESSAGES : imports
   MAIL_MESSAGES ||--o{ MAIL_ATTACHMENTS : has
@@ -167,57 +165,30 @@ OAuth2 또는 자체 로그인을 확장할 수 있게 인증 수단을 별도 �
 
 ### report_template_versions
 
+섹션과 필드는 별도 테이블로 나누지 않고 `schema_snapshot` 하나에 저장합니다.
+형식은 `packages/report-schema/template.schema.json`을 따릅니다.
+(결정 배경: [report-generation-design.md](report-generation-design.md) 3.4)
+
 | 컬럼 | 타입 | 제약 | 설명 |
 | --- | --- | --- | --- |
 | `id` | `uuid` | PK | 양식 버전 ID |
-| `template_id` | `uuid` | not null | 양식 ID |
-| `version` | `integer` | not null | 1부터 증가하는 버전 |
-| `title_format` | `varchar(200)` | nullable | 생성 보고서 제목 형식 |
-| `schema_snapshot` | `jsonb` | not null | 섹션/필드 전체 스냅샷 |
-| `validation_schema` | `jsonb` | nullable | 입력값 검증 규칙 |
+| `template_id` | `uuid` | not null, FK | 양식 ID |
+| `version` | `integer` | nullable | 발행 시 1부터 증가. `DRAFT`는 null |
 | `status` | `varchar(30)` | not null | `DRAFT`, `PUBLISHED`, `ARCHIVED` |
-| `published_at` | `timestamptz` | nullable | 발행 시각 |
-| `created_by_user_id` | `uuid` | not null | 버전 생성자 ID |
+| `schema_snapshot` | `jsonb` | not null | 섹션/필드/변수/제목 형식 전체 |
+| `origin` | `varchar(30)` | not null | `BUILDER`, `IMPORTED`, `CLONED` |
+| `published_at` | `timestamptz` | nullable | 발행 시각. `DRAFT`는 null |
 | `created_at` | `timestamptz` | not null | 생성 시각 |
+| `updated_at` | `timestamptz` | not null | 수정 시각 |
 
-주요 인덱스:
+`created_by_user_id`는 사용자 기능과 함께 추가합니다.
+
+제약과 인덱스:
 
 - `uq_report_template_versions_template_version` on `template_id`, `version`
-- `idx_report_template_versions_template_status`
-
-### template_sections
-
-| 컬럼 | 타입 | 제약 | 설명 |
-| --- | --- | --- | --- |
-| `id` | `uuid` | PK | 섹션 ID |
-| `template_version_id` | `uuid` | not null | 양식 버전 ID |
-| `key` | `varchar(80)` | not null | 섹션 키 |
-| `title` | `varchar(150)` | not null | 섹션 제목 |
-| `description` | `text` | nullable | 에이전트와 사용자에게 보여줄 설명 |
-| `sort_order` | `integer` | not null | 표시 순서 |
-| `created_at` | `timestamptz` | not null | 생성 시각 |
-| `updated_at` | `timestamptz` | not null | 수정 시각 |
-
-### template_fields
-
-| 컬럼 | 타입 | 제약 | 설명 |
-| --- | --- | --- | --- |
-| `id` | `uuid` | PK | 필드 ID |
-| `template_section_id` | `uuid` | not null | 섹션 ID |
-| `key` | `varchar(80)` | not null | 필드 키 |
-| `label` | `varchar(150)` | not null | 표시 이름 |
-| `field_type` | `varchar(40)` | not null | `TEXT`, `NUMBER`, `DATE`, `BOOLEAN`, `SELECT`, `TABLE`, `RICH_TEXT` |
-| `required` | `boolean` | not null | 필수 여부 |
-| `options` | `jsonb` | nullable | 선택지, 테이블 컬럼 등 타입별 설정 |
-| `extraction_hint` | `text` | nullable | AI 추출 힌트 |
-| `sort_order` | `integer` | not null | 표시 순서 |
-| `created_at` | `timestamptz` | not null | 생성 시각 |
-| `updated_at` | `timestamptz` | not null | 수정 시각 |
-
-주요 인덱스:
-
-- `uq_template_sections_version_key` on `template_version_id`, `key`
-- `uq_template_fields_section_key` on `template_section_id`, `key`
+- `uq_report_template_versions_one_draft` on `template_id` where `status = 'DRAFT'` (양식당 DRAFT 하나)
+- `ck_report_template_versions_version_status`: `DRAFT`일 때만 `version`이 null
+- `ck_report_template_versions_published_at`: `DRAFT`일 때만 `published_at`이 null
 
 ## Mail Ingestion Service
 
@@ -529,12 +500,10 @@ organizations/{organizationId}/reports/{reportId}/{fileType}/{fileName}
 3. `organization_members`
 4. `report_templates`
 5. `report_template_versions`
-6. `template_sections`
-7. `template_fields`
-8. `analysis_jobs`
-9. `analysis_results`
-10. `reports`
-11. `report_files`
+6. `analysis_jobs`
+7. `analysis_results`
+8. `reports`
+9. `report_files`
 
 메일 수집 연동은 아직 뒤 단계이므로 `mail_sources`, `mail_messages`, `mail_attachments`는
 초기에는 샘플 입력 또는 업로드 입력 설계가 확정될 때 추가합니다.
@@ -542,7 +511,6 @@ organizations/{organizationId}/reports/{reportId}/{fileType}/{fileName}
 ## 보류할 결정
 
 - 서비스별 독립 DB를 바로 둘지, 하나의 PostgreSQL 인스턴스에서 schema만 나눌지
-- 템플릿 스키마를 완전히 정규화할지, `schema_snapshot` 중심으로 단순화할지
 - 메일 본문 검색을 PostgreSQL full-text search로 시작할지, OpenSearch를 별도로 둘지
 - 대용량 감사 로그와 실행 로그를 언제 파티셔닝할지
 - 외부 메일 연동 토큰 저장을 Secret Manager로 할지, 앱 레벨 암호화 테이블로 시작할지

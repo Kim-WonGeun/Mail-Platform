@@ -484,7 +484,7 @@ CLAUDE.md의 원칙대로 한 단위씩 끝내고 다음으로 넘어갑니다. 
 ### 1단계: 양식 스키마
 
 1. 양식 스키마 JSON Schema + 예시 파일 정의 (`packages/report-schema`) — 완료
-2. `report_template_versions` 마이그레이션, 기본 양식 3개에 샘플 스키마 시드
+2. `report_template_versions` 마이그레이션, 기본 양식 3개에 샘플 스키마 시드 — 완료
 3. 양식 상세 API가 섹션·필드를 포함해 응답 → web 상세 페이지에 섹션·필드 표시 (읽기 전용)
 4. web 양식 빌더: 섹션 추가/삭제, 필드 추가 (state·이벤트 학습)
 5. draft 저장/발행 API + 빌더 연결
