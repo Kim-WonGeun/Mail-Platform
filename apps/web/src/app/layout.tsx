@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
-import Sidebar from "../components/Sidebar";
-import TopBar from "../components/TopBar";
+import Sidebar from "@/components/layout/Sidebar/Sidebar";
+import TopBar from "@/components/layout/TopBar/TopBar";
 import styles from "./layout.module.css";
 // 전역 CSS는 루트 레이아웃에서 한 번만 불러오면 모든 페이지에 적용됩니다.
 import "./globals.css";

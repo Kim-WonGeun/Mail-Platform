@@ -1,6 +1,6 @@
 package com.mailplatform.api.template.dto;
 
-import com.mailplatform.api.template.ReportTemplate;
+import com.mailplatform.api.template.domain.ReportTemplate;
 import java.util.UUID;
 
 // API 응답 계약입니다. 엔티티 구조가 바뀌어도 응답 모양은 이 record로 고정합니다.

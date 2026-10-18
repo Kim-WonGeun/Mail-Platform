@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
-import Button from "./Button";
-import SectionHeading from "./SectionHeading";
+import Button from "@/components/ui/Button/Button";
+import SectionHeading from "@/components/ui/SectionHeading/SectionHeading";
 import styles from "./ReportTitleEditor.module.css";
 
 // 확정한 값과 변경 요청에 사용할 함수를 부모에게 받습니다.

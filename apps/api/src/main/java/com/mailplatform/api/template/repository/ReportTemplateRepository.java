@@ -1,5 +1,7 @@
-package com.mailplatform.api.template;
+package com.mailplatform.api.template.repository;
 
+import com.mailplatform.api.template.domain.ReportTemplate;
+import com.mailplatform.api.template.domain.ReportTemplateStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

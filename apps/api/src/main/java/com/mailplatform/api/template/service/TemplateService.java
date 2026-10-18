@@ -1,7 +1,13 @@
-package com.mailplatform.api.template;
+package com.mailplatform.api.template.service;
 
+import com.mailplatform.api.template.domain.ReportTemplate;
+import com.mailplatform.api.template.domain.ReportTemplateStatus;
+import com.mailplatform.api.template.domain.ReportTemplateVersion;
 import com.mailplatform.api.template.dto.TemplateDetailResponse;
 import com.mailplatform.api.template.dto.TemplateResponse;
+import com.mailplatform.api.template.exception.TemplateNotFoundException;
+import com.mailplatform.api.template.repository.ReportTemplateRepository;
+import com.mailplatform.api.template.repository.ReportTemplateVersionRepository;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;

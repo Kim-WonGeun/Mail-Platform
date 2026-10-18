@@ -1,7 +1,7 @@
 package com.mailplatform.api.template.dto;
 
-import com.mailplatform.api.template.ReportTemplate;
-import com.mailplatform.api.template.ReportTemplateVersion;
+import com.mailplatform.api.template.domain.ReportTemplate;
+import com.mailplatform.api.template.domain.ReportTemplateVersion;
 import java.util.UUID;
 import tools.jackson.databind.JsonNode;
 

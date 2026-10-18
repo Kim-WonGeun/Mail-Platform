@@ -1,4 +1,4 @@
-package com.mailplatform.api.template;
+package com.mailplatform.api.template.exception;
 
 import java.util.UUID;
 import org.springframework.http.HttpStatus;

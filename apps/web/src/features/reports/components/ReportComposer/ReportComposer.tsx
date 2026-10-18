@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchTemplates, type ReportTemplate } from "../lib/templateApi";
-import PageHeader from "./PageHeader";
-import ReportPreview from "./ReportPreview";
-import ReportTitleEditor from "./ReportTitleEditor";
-import TemplateList, { type LoadStatus } from "./TemplateList";
+import { fetchTemplates } from "@/features/templates/api";
+import type { ReportTemplate } from "@/features/templates/types";
+import PageHeader from "@/components/layout/PageHeader/PageHeader";
+import ReportPreview from "@/features/reports/components/ReportPreview/ReportPreview";
+import ReportTitleEditor from "@/features/reports/components/ReportTitleEditor/ReportTitleEditor";
+import TemplateList, { type LoadStatus } from "@/features/templates/components/TemplateList/TemplateList";
 import styles from "./ReportComposer.module.css";
 
 export default function ReportComposer() {

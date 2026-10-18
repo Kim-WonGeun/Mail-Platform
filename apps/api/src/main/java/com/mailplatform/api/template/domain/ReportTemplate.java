@@ -1,4 +1,4 @@
-package com.mailplatform.api.template;
+package com.mailplatform.api.template.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

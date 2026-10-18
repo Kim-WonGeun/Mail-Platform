@@ -1,7 +1,8 @@
-package com.mailplatform.api.template;
+package com.mailplatform.api.template.controller;
 
 import com.mailplatform.api.template.dto.TemplateDetailResponse;
 import com.mailplatform.api.template.dto.TemplateResponse;
+import com.mailplatform.api.template.service.TemplateService;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.web.bind.annotation.GetMapping;

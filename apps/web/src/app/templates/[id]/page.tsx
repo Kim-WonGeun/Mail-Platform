@@ -1,4 +1,4 @@
-import TemplateDetail from "../../../components/TemplateDetail";
+import TemplateDetail from "@/features/templates/components/TemplateDetail/TemplateDetail";
 
 // [id] 폴더 이름이 URL의 값을 받는 자리입니다. /templates/abc면 id는 "abc"입니다.
 // Next.js 15에서 params는 Promise이므로 await로 값을 꺼냅니다.
