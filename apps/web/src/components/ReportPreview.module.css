@@ -1,0 +1,124 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-16);
+  padding: var(--pw-space-32) var(--pw-space-40);
+  background: var(--pw-canvas);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--pw-space-8);
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+/* ::before로 상태 점을 그립니다. data-ready="true"일 때만 초록색입니다. */
+.status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--pw-radius-round);
+  background: var(--pw-subtle);
+}
+
+.status[data-ready="true"] {
+  color: var(--pw-success);
+}
+
+.status[data-ready="true"]::before {
+  background: var(--pw-success);
+}
+
+/* 종이 한 장처럼 보이도록 흰 배경과 테두리를 둡니다. position: sticky로 스크롤해도 따라옵니다. */
+.paper {
+  position: sticky;
+  top: var(--pw-space-24);
+  padding: var(--pw-space-40) var(--pw-space-40) var(--pw-space-48);
+  border: 1px solid var(--pw-line);
+  border-radius: var(--pw-radius);
+  background: var(--pw-paper);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif), serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 34px;
+  word-break: keep-all;
+}
+
+.title[data-empty="true"] {
+  color: var(--pw-subtle);
+}
+
+.meta {
+  margin-top: var(--pw-space-4);
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+.description {
+  margin-top: var(--pw-space-16);
+  padding: var(--pw-space-12) var(--pw-space-16);
+  border-radius: var(--pw-radius);
+  background: var(--pw-canvas);
+  font-size: 13px;
+  line-height: 22px;
+  color: var(--pw-muted);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-24);
+  margin: var(--pw-space-32) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-8);
+}
+
+.sectionHeading {
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.line {
+  display: block;
+  height: 8px;
+  border-radius: var(--pw-radius-round);
+  background: var(--pw-soft);
+}
+
+@media (max-width: 960px) {
+  .panel {
+    padding: var(--pw-space-24) var(--pw-space-16);
+  }
+
+  .paper {
+    position: static;
+    padding: var(--pw-space-24);
+  }
+}

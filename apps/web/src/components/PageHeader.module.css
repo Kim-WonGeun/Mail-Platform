@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-4);
+}
+
+.eyebrow {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 34px;
+  /* 문자열 안의 줄바꿈(\n)을 화면에서도 줄바꿈으로 보여줍니다. */
+  white-space: pre-line;
+}
+
+.description {
+  color: var(--pw-muted);
+}

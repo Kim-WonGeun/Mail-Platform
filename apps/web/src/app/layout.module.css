@@ -1,0 +1,19 @@
+/* AppShell: 왼쪽 Sidebar(252px)와 오른쪽 Main panel을 가로로 배치합니다. */
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* 페이지의 <main>이 TopBar 아래 남은 높이를 모두 채우도록 늘립니다. */
+.main > main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}

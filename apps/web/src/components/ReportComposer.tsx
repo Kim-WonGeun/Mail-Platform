@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { fetchTemplates, type ReportTemplate } from "../lib/templateApi";
-import ReportSummary from "./ReportSummary";
+import PageHeader from "./PageHeader";
+import ReportPreview from "./ReportPreview";
 import ReportTitleEditor from "./ReportTitleEditor";
-import TemplateList from "./TemplateList";
-
-// 요청 진행 상태를 하나의 값으로 관리해 화면에 보여줄 내용을 정합니다.
-type LoadStatus = "loading" | "success" | "error";
+import TemplateList, { type LoadStatus } from "./TemplateList";
+import styles from "./ReportComposer.module.css";
 
 export default function ReportComposer() {
   // 확정한 제목은 부모가, 작성 중인 제목은 입력 컴포넌트가 관리합니다.
@@ -45,30 +44,26 @@ export default function ReportComposer() {
   );
 
   return (
-    <>
-      {/* 검증된 제목을 부모에게 알릴 수 있도록 변경 함수를 전달합니다. */}
-      <ReportTitleEditor
-        appliedTitle={appliedTitle}
-        onApplyTitle={setAppliedTitle}
-      />
-      {/* 요청 상태에 따라 안내 문구 또는 양식 목록을 보여줍니다. */}
-      {loadStatus === "loading" && <p role="status">양식을 불러오는 중입니다.</p>}
-      {loadStatus === "error" && (
-        <p role="alert">양식을 불러오지 못했습니다. API 서버를 확인해 주세요.</p>
-      )}
-      {loadStatus === "success" && (
-        // 목록 데이터도 props로 전달해 TemplateList는 받은 값만 그리게 합니다.
+    // 왼쪽은 입력 영역, 오른쪽은 미리보기 영역입니다. 두 영역 모두 같은 부모 상태를 봅니다.
+    <div className={styles.composer}>
+      <div className={styles.form}>
+        <PageHeader
+          eyebrow="새 보고서"
+          title="보고서 설정"
+          description="제목과 양식을 정하면 오른쪽에서 보고서 모양을 바로 확인할 수 있어요."
+        />
+        {/* 검증된 제목을 부모에게 알릴 수 있도록 변경 함수를 전달합니다. */}
+        <ReportTitleEditor onApplyTitle={setAppliedTitle} />
+        {/* 목록 데이터와 요청 상태도 props로 전달해 TemplateList는 받은 값만 그리게 합니다. */}
         <TemplateList
           templates={templates}
+          loadStatus={loadStatus}
           selectedTemplateId={selectedTemplateId}
           onSelectTemplate={setSelectedTemplateId}
         />
-      )}
-      {/* 확정 제목과 양식 이름을 전달하고, 선택 전에는 빈 문자열을 사용합니다. */}
-      <ReportSummary
-        title={appliedTitle}
-        templateTitle={selectedTemplate?.name ?? ""}
-      />
-    </>
+      </div>
+      {/* 같은 상태를 미리보기에도 전달하므로, 왼쪽에서 바꾸면 오른쪽이 함께 다시 그려집니다. */}
+      <ReportPreview title={appliedTitle} template={selectedTemplate} />
+    </div>
   );
 }

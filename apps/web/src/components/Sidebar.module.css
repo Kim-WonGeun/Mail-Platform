@@ -1,0 +1,117 @@
+/* CSS Module: 클래스 이름이 파일마다 고유하게 바뀌어 다른 컴포넌트와 충돌하지 않습니다. */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 220px;
+  min-height: 100vh;
+  padding: var(--pw-space-24) var(--pw-space-12) var(--pw-space-16);
+  border-right: 1px solid var(--pw-line);
+  background: var(--pw-side);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 72px;
+  padding: 0 var(--pw-space-12);
+}
+
+.brandName {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--pw-text);
+}
+
+.caption {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--pw-muted);
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-8);
+}
+
+.navigation > .eyebrow {
+  padding: 0 var(--pw-space-12);
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0;
+  list-style: none;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 var(--pw-space-12);
+  border-radius: var(--pw-radius);
+  color: var(--pw-muted);
+  text-decoration: none;
+}
+
+a.navItem:hover {
+  background: var(--pw-soft);
+}
+
+a.navItem:focus-visible {
+  outline: var(--pw-stroke-focus) solid var(--pw-focus);
+}
+
+.active {
+  background: var(--pw-soft);
+  color: var(--pw-primary);
+  font-weight: 500;
+  line-height: 22px;
+}
+
+/* margin-top: auto로 남은 공간을 위쪽에 두어 프로필을 맨 아래로 보냅니다. */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--pw-space-12);
+  height: 64px;
+  margin-top: auto;
+  padding: 0 var(--pw-space-12);
+  border-top: 1px solid var(--pw-line);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--pw-line);
+  border-radius: var(--pw-radius-round);
+  background: var(--pw-paper);
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-primary);
+}
+
+.workspace {
+  color: var(--pw-text);
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    display: none;
+  }
+}
