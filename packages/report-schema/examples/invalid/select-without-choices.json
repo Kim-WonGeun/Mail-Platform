@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "titleFormat": "업무 현황",
+  "sections": [
+    {
+      "key": "summary",
+      "title": "요약",
+      "fields": [
+        { "key": "riskLevel", "label": "위험도", "type": "SELECT", "required": true, "options": {} }
+      ]
+    }
+  ]
+}

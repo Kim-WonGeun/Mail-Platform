@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "titleFormat": "업무 현황",
+  "sections": [
+    {
+      "key": "highlights",
+      "title": "주요 내용",
+      "fields": [
+        {
+          "key": "items",
+          "label": "주요 내용",
+          "type": "LIST",
+          "required": true,
+          "options": { "minItems": 5, "maxItems": 3 }
+        }
+      ]
+    }
+  ]
+}
