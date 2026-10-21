@@ -20,6 +20,8 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	// 요청 DTO에 @NotBlank, @Size 같은 검증 규칙을 붙일 수 있게 합니다.
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	// JPA는 엔티티와 테이블을 연결하고, Flyway는 SQL 파일로 테이블을 만듭니다.
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-flyway")

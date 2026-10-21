@@ -34,6 +34,20 @@ public class ReportTemplate {
     protected ReportTemplate() {
     }
 
+    private ReportTemplate(UUID id, String name, String description, ReportTemplateStatus status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    // 새 양식을 만드는 방법을 한곳에 모읍니다. id는 설계 문서대로 애플리케이션에서 생성합니다.
+    // 새 양식은 한 번도 발행하지 않았으므로 DRAFT로 시작하고, 보고서 작성 목록(ACTIVE)에는 아직 나오지 않습니다.
+    // created_at, updated_at은 엔티티에 없으므로 DB의 기본값(now())이 채웁니다.
+    public static ReportTemplate create(String name, String description) {
+        return new ReportTemplate(UUID.randomUUID(), name, description, ReportTemplateStatus.DRAFT);
+    }
+
     public UUID getId() {
         return id;
     }
