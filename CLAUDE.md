@@ -18,6 +18,7 @@
 apps/web                 프론트엔드
 apps/api                 Spring Boot 단일 API
 apps/agent-orchestrator  Python 에이전트
+packages/report-schema   보고서 양식 JSON Schema와 예시
 infra/docker             로컬 PostgreSQL
 infra/k8s/base           Kubernetes 매니페스트
 docs                     설계 문서
@@ -31,6 +32,7 @@ pnpm dev                                    # web 개발 서버
 pnpm --filter @mail-platform/web typecheck  # web 타입 검사
 cd apps/api && ./gradlew test               # api 테스트
 cd apps/agent-orchestrator && uv run main.py
+cd packages/report-schema && uv run validate.py  # 양식 스키마 예시 검증
 ```
 
 ## 브랜치와 커밋

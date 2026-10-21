@@ -71,6 +71,7 @@ mail-platform
 apps/web                 Next.js 프론트엔드
 apps/api                 Spring Boot 단일 API (Gateway, 서비스 분리 전)
 apps/agent-orchestrator  Python 에이전트 실행 환경
+packages/report-schema   보고서 양식 JSON Schema와 예시 (web·api·agent 공통 기준)
 infra/docker             로컬 개발용 Docker Compose
 infra/k8s/base           Kustomize 기반 매니페스트
 docs                     설계 문서
