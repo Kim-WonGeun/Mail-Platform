@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchTemplate, type ReportTemplateDetail } from "../lib/templateApi";
-import TemplateSchemaView from "./TemplateSchemaView";
+import { fetchTemplate } from "@/features/templates/api";
+import type { ReportTemplateDetail } from "@/features/templates/types";
+import TemplateSchemaView from "@/features/templates/components/TemplateSchemaView/TemplateSchemaView";
 
 type TemplateDetailProps = {
   templateId: string;

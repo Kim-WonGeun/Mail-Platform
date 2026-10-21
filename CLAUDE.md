@@ -24,6 +24,8 @@ infra/k8s/base           Kubernetes 매니페스트
 docs                     설계 문서
 ```
 
+앱 내부 폴더 규칙은 AGENTS.md의 "앱 내부 폴더 구조"를 따릅니다.
+
 ## 명령어
 
 ```bash

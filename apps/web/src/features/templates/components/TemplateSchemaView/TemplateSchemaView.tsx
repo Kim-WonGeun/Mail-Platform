@@ -3,7 +3,7 @@ import type {
   FieldType,
   TemplateField,
   TemplateSchema,
-} from "../lib/templateApi";
+} from "@/features/templates/types";
 import styles from "./TemplateSchemaView.module.css";
 
 // 화면에 보여줄 타입 이름입니다. Record<FieldType, string>이므로 타입을 하나라도 빠뜨리면 컴파일 오류가 납니다.

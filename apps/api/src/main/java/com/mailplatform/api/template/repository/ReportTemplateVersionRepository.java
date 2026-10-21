@@ -1,5 +1,6 @@
-package com.mailplatform.api.template;
+package com.mailplatform.api.template.repository;
 
+import com.mailplatform.api.template.domain.ReportTemplateVersion;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 

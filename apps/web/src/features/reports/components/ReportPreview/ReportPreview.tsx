@@ -1,4 +1,4 @@
-import type { ReportTemplate } from "../lib/templateApi";
+import type { ReportTemplate } from "@/features/templates/types";
 import styles from "./ReportPreview.module.css";
 
 // 미리보기는 부모가 가진 값을 받아 그리기만 하므로 state가 없습니다.

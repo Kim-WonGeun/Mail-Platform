@@ -1,4 +1,4 @@
-import ReportComposer from "../components/ReportComposer";
+import ReportComposer from "@/features/reports/components/ReportComposer/ReportComposer";
 
 export default function HomePage() {
   return (

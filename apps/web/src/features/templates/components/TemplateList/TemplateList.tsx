@@ -1,7 +1,7 @@
 "use client";
 
-import type { ReportTemplate } from "../lib/templateApi";
-import SectionHeading from "./SectionHeading";
+import type { ReportTemplate } from "@/features/templates/types";
+import SectionHeading from "@/components/ui/SectionHeading/SectionHeading";
 import styles from "./TemplateList.module.css";
 
 // 요청 진행 상태를 하나의 값으로 관리해 화면에 보여줄 내용을 정합니다.
