@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "titleFormat": "업무 현황",
+  "sections": [
+    {
+      "key": "progress",
+      "title": "진행 현황",
+      "fields": [
+        { "key": "items", "label": "진행 항목", "type": "TABLE", "required": true }
+      ]
+    }
+  ]
+}

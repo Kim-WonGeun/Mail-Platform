@@ -1,0 +1,28 @@
+/* 입력 영역(왼쪽)과 미리보기 영역(오른쪽)을 grid 두 열로 나눕니다. */
+.composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  flex: 1;
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pw-space-32);
+  padding: var(--pw-space-32) var(--pw-space-40);
+  border-right: 1px solid var(--pw-line);
+}
+
+/* 화면이 좁으면 한 열로 쌓아서 미리보기를 입력 영역 아래에 둡니다. */
+@media (max-width: 960px) {
+  .composer {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    padding: var(--pw-space-24) var(--pw-space-16);
+    border-right: 0;
+    border-bottom: 1px solid var(--pw-line);
+  }
+}

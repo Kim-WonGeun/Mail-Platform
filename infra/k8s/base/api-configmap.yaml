@@ -1,0 +1,18 @@
+apiVersion: v1
+# ConfigMap은 민감하지 않은 설정 값을 이미지와 분리해 보관하는 리소스입니다.
+# 같은 이미지를 환경마다 다른 설정으로 실행할 수 있게 해 줍니다.
+kind: ConfigMap
+# metadata는 이 Kubernetes 리소스의 이름, namespace, 라벨 같은 식별 정보를 담습니다.
+metadata:
+  name: mail-platform-api
+  namespace: mail-platform
+  labels:
+    app.kubernetes.io/name: mail-platform-api
+    app.kubernetes.io/part-of: mail-platform
+# data의 key-value는 api-deployment.yaml에서 환경 변수로 연결합니다.
+data:
+  # application.yml의 profiles.default가 dev이므로 프로필을 명시적으로 바꿉니다.
+  # dev 프로필이 켜지면 application-dev.yml의 localhost 접속 정보가 적용되어 실패합니다.
+  SPRING_PROFILES_ACTIVE: k8s
+  # Service 이름(mail-platform-postgres)이 클러스터 내부 DNS 주소가 됩니다.
+  DB_URL: jdbc:postgresql://mail-platform-postgres:5432/mail_platform

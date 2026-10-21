@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+# metadata는 이 Kubernetes 리소스의 이름, namespace, 라벨 같은 식별 정보를 담습니다.
+metadata:
+  # Next.js 웹 서버 Pod를 관리하는 Deployment 이름입니다.
+  name: mail-platform-web
+  # 이 Deployment는 mail-platform namespace 안에 생성됩니다.
+  namespace: mail-platform
+  labels:
+    # Kubernetes 리소스를 찾고 묶을 때 사용하는 공통 라벨입니다.
+    app.kubernetes.io/name: mail-platform-web
+    app.kubernetes.io/part-of: mail-platform
+# spec은 Deployment가 유지해야 하는 "원하는 상태"를 정의합니다.
+# 예: Pod 개수, 어떤 Pod를 관리할지, Pod를 어떤 모양으로 만들지.
+spec:
+  # 웹 Pod를 몇 개 유지할지 정합니다. 처음에는 1개로 시작합니다.
+  replicas: 1
+  # selector는 Deployment가 관리할 Pod를 고르는 조건입니다.
+  # template.metadata.labels와 맞아야 합니다.
+  selector:
+    # matchLabels는 아래 라벨들을 모두 가진 Pod를 선택합니다.
+    matchLabels:
+      # Deployment가 어떤 Pod를 자기 관리 대상으로 볼지 정하는 기준입니다.
+      app.kubernetes.io/name: mail-platform-web
+  # template은 Deployment가 새로 만들 Pod의 설계도입니다.
+  # Pod 자체의 metadata와 spec을 이 안에 적습니다.
+  template:
+    # template.metadata는 생성될 Pod에 붙을 식별 정보를 담습니다.
+    metadata:
+      # labels는 Service나 Deployment selector가 Pod를 찾을 때 사용하는 표식입니다.
+      labels:
+        # 실제 생성되는 Pod에 붙는 라벨입니다.
+        # 위 selector와 반드시 맞아야 Deployment가 이 Pod를 관리합니다.
+        app.kubernetes.io/name: mail-platform-web
+        app.kubernetes.io/part-of: mail-platform
+    # template.spec은 생성될 Pod의 실행 방식을 정의합니다.
+    # 어떤 컨테이너를 띄울지, 포트/헬스체크/자원 제한 등을 적습니다.
+    spec:
+      # containers는 Pod 안에서 실행할 컨테이너 목록입니다.
+      # 지금은 웹 컨테이너 하나만 실행합니다.
+      containers:
+        - name: web
+          # 로컬에서 빌드한 Next.js 웹 이미지입니다.
+          image: mail-platform-web:dev
+          # 이미지가 노드에 이미 있으면 다시 받지 않습니다.
+          # 로컬 개발 이미지에 적합한 설정입니다.
+          imagePullPolicy: IfNotPresent
+          # ports는 컨테이너가 열고 있는 포트를 문서화하고 이름을 붙입니다.
+          # Service와 probe가 이 이름을 참조할 수 있습니다.
+          ports:
+            - name: http
+              # Next.js 서버가 컨테이너 안에서 사용하는 포트입니다.
+              containerPort: 3000
+          # readinessProbe는 "요청을 받을 준비가 됐는지" 확인하는 설정입니다.
+          readinessProbe:
+            # 준비 상태 확인입니다.
+            # 실패하면 Service가 이 Pod로 트래픽을 보내지 않습니다.
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          # livenessProbe는 "프로세스가 살아있는지" 확인하는 설정입니다.
+          livenessProbe:
+            # 생존 상태 확인입니다.
+            # 계속 실패하면 Kubernetes가 컨테이너를 재시작합니다.
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          # resources는 컨테이너의 CPU/메모리 요청량과 제한량을 정의합니다.
+          resources:
+            # 스케줄링할 때 최소 이 정도 자원이 필요하다고 예약합니다.
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            # 컨테이너가 사용할 수 있는 최대 자원입니다.
+            limits:
+              cpu: 500m
+              # 로컬 실행 중 OOMKilled가 발생해 상한을 올렸습니다.
+              # 실제 사용량을 관찰한 뒤 운영 환경에 맞게 조정합니다.
+              memory: 1Gi

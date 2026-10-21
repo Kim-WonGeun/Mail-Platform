@@ -1,0 +1,18 @@
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  gap: var(--pw-space-12);
+  height: 28px;
+}
+
+.number {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-subtle);
+}
+
+.heading {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+}

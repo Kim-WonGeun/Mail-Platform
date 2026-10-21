@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "titleFormat": "업무 현황",
+  "sections": [
+    {
+      "key": "notice",
+      "title": "안내",
+      "fields": [
+        {
+          "key": "disclaimer",
+          "label": "안내 문구",
+          "type": "STATIC",
+          "content": "자동 생성된 보고서입니다.",
+          "instructions": "고정 문구는 AI가 쓰지 않으므로 지침을 둘 수 없습니다."
+        }
+      ]
+    }
+  ]
+}

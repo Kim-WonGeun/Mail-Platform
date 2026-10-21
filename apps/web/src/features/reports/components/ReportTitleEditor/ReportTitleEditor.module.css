@@ -1,0 +1,58 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.helper {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+.form {
+  display: flex;
+  gap: var(--pw-space-12);
+}
+
+/* TextInput: Empty/Filled는 기본, Focus/Error/Disabled는 아래 선택자가 처리합니다. */
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: var(--pw-space-8) var(--pw-space-16);
+  border: var(--pw-stroke-default) solid var(--pw-line);
+  border-radius: var(--pw-radius);
+  background: var(--pw-paper);
+  font: inherit;
+  color: var(--pw-text);
+}
+
+.input::placeholder {
+  color: var(--pw-muted);
+}
+
+.input:focus {
+  outline: none;
+  border: var(--pw-stroke-focus) solid var(--pw-focus);
+}
+
+/* aria-invalid 속성 값으로 오류 상태를 스타일링합니다. */
+.input[aria-invalid="true"] {
+  border: var(--pw-stroke-default) solid var(--pw-danger);
+}
+
+.input:disabled {
+  background: var(--pw-disabled);
+  color: var(--pw-disabled-text);
+}
+
+.submit {
+  width: 104px;
+}
+
+.error {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-danger);
+}

@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+# Ingress는 HTTP 요청의 호스트와 경로를 Service에 연결하는 규칙입니다.
+kind: Ingress
+# metadata는 이 리소스의 식별 정보입니다.
+metadata:
+  name: mail-platform
+  # 연결할 Service와 같은 namespace에 생성합니다.
+  namespace: mail-platform
+# spec은 Controller가 처리할 라우팅 규칙을 정의합니다.
+spec:
+  # 이 규칙을 처리할 Ingress Controller의 클래스를 지정합니다.
+  ingressClassName: traefik
+  # rules는 요청의 호스트와 경로별 목적지를 정의합니다.
+  rules:
+    # 로컬 실습에서는 localhost로 들어오는 요청을 처리합니다.
+    - host: localhost
+      http:
+        paths:
+          # 더 긴 경로가 우선하므로 /api 요청은 웹 대신 API로 갑니다.
+          - path: /api
+            # Prefix는 /api와 /api/health 등 하위 경로를 매칭합니다.
+            pathType: Prefix
+            # backend는 요청을 전달할 목적지입니다.
+            backend:
+              service:
+                name: mail-platform-api
+                # 컨테이너 포트가 아닌 Service의 port를 지정합니다.
+                port:
+                  number: 8080
+          # /api에 해당하지 않는 나머지 경로는 웹으로 전달합니다.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mail-platform-web
+                port:
+                  number: 3000
+# 경로를 바꾸지 않으므로 /api/health가 API에 그대로 전달됩니다.

@@ -11,6 +11,8 @@
 초기 모노레포 세팅 단계.
 
 현재는 `apps/web` 프론트엔드 애플리케이션부터 구성 중.
+`apps/api` Spring Boot API 서버는 기초 학습과 MVP API 구현을 위해 작은
+단일 서버로 시작.
 
 ## 기술 스택
 
@@ -38,6 +40,51 @@ mail-platform
 pnpm install
 pnpm dev
 ```
+
+web은 `/api` 요청을 `next.config.ts`의 rewrite로 API 서버(`127.0.0.1:8080`)에
+전달합니다. 양식 목록을 보려면 로컬 DB와 API 서버를 먼저 실행합니다.
+
+API 서버는 기본으로 `dev` 프로필(`application-dev.yml`)을 사용하므로, 먼저 아래
+"로컬 DB"를 실행합니다. 테스트는 Testcontainers가 PostgreSQL을 직접 띄우므로
+Docker만 실행 중이면 됩니다.
+
+```bash
+cd apps/api
+./gradlew bootRun
+```
+
+상태 확인:
+
+```bash
+curl http://127.0.0.1:8080/api/health
+```
+
+## 로컬 DB
+
+Docker로 PostgreSQL 17을 실행합니다. 접속 정보는 `infra/docker/compose.yaml`에
+있는 로컬 전용 값(`mail_platform`)입니다.
+
+```bash
+docker compose -f infra/docker/compose.yaml up -d --wait
+docker exec -it mail-platform-postgres psql -U mail_platform -d mail_platform
+docker compose -f infra/docker/compose.yaml down
+```
+
+`down`은 컨테이너만 지우고 데이터는 volume에 남깁니다. 데이터까지 지우려면
+`down -v`를 사용합니다.
+
+## Python 에이전트 실행 환경
+
+Python 3.13.16과 uv를 사용합니다. 현재는 실행 환경과 샘플 메일 출력 예제가 구성되어 있습니다.
+
+```bash
+cd apps/agent-orchestrator
+uv sync
+uv run python --version
+uv run python main.py
+```
+
+자세한 내용은 `apps/agent-orchestrator/README.md`를 참고합니다.
 
 ## 브랜치 전략
 

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "titleFormat": "{{teamName.start}} 업무 현황",
+  "variables": [
+    { "key": "teamName", "label": "팀 이름", "type": "TEXT", "required": true }
+  ],
+  "sections": [
+    {
+      "key": "summary",
+      "title": "요약",
+      "fields": [
+        { "key": "headline", "label": "한 줄 요약", "type": "TEXT", "required": true }
+      ]
+    }
+  ]
+}

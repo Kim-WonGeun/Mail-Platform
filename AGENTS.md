@@ -63,6 +63,80 @@ mail-platform
 └── tools
 ```
 
+위 구조는 목표 방향입니다. 디렉터리와 서비스는 필요한 작업 단위에서만 추가합니다.
+
+## 현재 구현 상태
+
+```text
+apps/web                 Next.js 프론트엔드
+apps/api                 Spring Boot 단일 API (Gateway, 서비스 분리 전)
+apps/agent-orchestrator  Python 에이전트 실행 환경
+packages/report-schema   보고서 양식 JSON Schema와 예시 (web·api·agent 공통 기준)
+infra/docker             로컬 개발용 Docker Compose
+infra/k8s/base           Kustomize 기반 매니페스트
+docs                     설계 문서
+```
+
+## 앱 내부 폴더 구조
+
+파일을 한 폴더에 모아 두지 않고, 앱마다 아래 기준으로 나눕니다. 새 파일도 같은 기준을 따릅니다.
+
+### apps/web
+
+기능(feature)별로 나누고, 컴포넌트는 폴더 하나에 `tsx`와 `module.css`를 함께 둡니다.
+
+```text
+src/
+├── app/                        라우트(page, layout)만 둡니다. 화면 로직은 features에 둡니다.
+├── components/                 특정 기능을 모르는 공용 컴포넌트
+│   ├── layout/                 앱 껍데기: TopBar, Sidebar, PageHeader
+│   └── ui/                     재사용 UI: Button, SectionHeading
+└── features/                   기능별 코드
+    ├── templates/
+    │   ├── api.ts              API 요청 함수
+    │   ├── types.ts            API 응답·도메인 타입
+    │   └── components/         TemplateList/, TemplateDetail/, TemplateSchemaView/
+    └── reports/
+        └── components/         ReportComposer/, ReportTitleEditor/, ReportPreview/
+```
+
+- import는 `@/` 별칭(`src/` 기준)을 쓰고, 같은 폴더의 CSS만 `./`로 가져옵니다.
+- 여러 기능에서 쓰기 시작한 컴포넌트는 `components/ui`로 옮깁니다.
+
+### apps/api
+
+도메인(기능) 패키지 아래를 계층별로 나눕니다.
+
+```text
+com.mailplatform.api
+├── global/                     여러 도메인이 함께 쓰는 설정, 예외 처리, 헬스체크
+└── template/
+    ├── controller/             HTTP 요청·응답
+    ├── service/                업무 규칙, 트랜잭션
+    ├── domain/                 JPA 엔티티와 enum
+    ├── repository/             Spring Data JPA Repository
+    ├── dto/                    요청·응답 DTO
+    └── exception/              도메인 예외
+```
+
+- 새 도메인(source, generation, report 등)도 같은 모양으로 패키지를 만듭니다.
+- 여러 계층을 함께 확인하는 통합 테스트는 도메인 패키지(`template`)에 둡니다.
+
+### apps/agent-orchestrator
+
+FastAPI 뼈대를 만드는 작업 단위에서 아래 구조로 시작합니다.
+
+```text
+src/agent_orchestrator/
+├── main.py                     FastAPI 앱 생성
+├── api/                        HTTP 라우터 (내부 API)
+├── graph/                      LangGraph 노드와 그래프
+├── llm/                        Claude API 호출, 출력 스키마 생성
+├── schemas/                    Pydantic 모델 (양식 스키마, 요청·응답)
+└── render/                     Markdown, HTML, PDF, DOCX 렌더러
+tests/
+```
+
 ## 언어 및 버전 기준
 
 ### 프론트엔드
@@ -90,7 +164,7 @@ Next.js는 프론트엔드 애플리케이션 프레임워크로 사용합니다
 
 ### Python 서비스
 
-- Python 3.12 또는 3.13
+- Python 3.13
 - FastAPI
 - Pydantic 2.x
 - LangGraph
@@ -415,8 +489,8 @@ ClusterIP를 사용해 클러스터 내부에만 노출합니다.
 ```text
 Frontend:      Next.js 15 + React 19 + TypeScript
 Backend:       Java 25 + Spring Boot 4.1.x + Spring Cloud 2025.1.x
-Agent:         Python 3.12/3.13 + FastAPI + LangGraph
-Report:        Python 3.12/3.13
+Agent:         Python 3.13 + FastAPI + LangGraph
+Report:        Python 3.13
 Database:      PostgreSQL 17
 Cache:         Redis 7.4+
 Broker:        RabbitMQ 4.x

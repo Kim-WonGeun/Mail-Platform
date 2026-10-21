@@ -1,0 +1,10 @@
+# dev 프로필에서만 적용되며, application.yml의 같은 항목을 덮어씁니다.
+# infra/docker/compose.yaml로 띄운 로컬 PostgreSQL에 접속합니다.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mail_platform
+    username: mail_platform
+    password: mail_platform
+  jpa:
+    # 개발 중에는 실행되는 SQL을 로그로 확인합니다.
+    show-sql: true

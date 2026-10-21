@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "titleFormat": "업무 현황",
+  "sections": [
+    {
+      "key": "summary",
+      "title": "요약",
+      "fields": [
+        { "key": "headline", "label": "한 줄 요약", "type": "TEXT", "required": true },
+        { "key": "headline", "label": "부제", "type": "TEXT", "required": false }
+      ]
+    }
+  ]
+}
