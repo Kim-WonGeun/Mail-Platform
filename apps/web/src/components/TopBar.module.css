@@ -1,0 +1,23 @@
+.topBar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 var(--pw-space-40);
+  border-bottom: 1px solid var(--pw-line);
+  color: var(--pw-muted);
+}
+
+.breadcrumb {
+  font-size: 12px;
+  line-height: 20px;
+  /* 구분자 앞뒤 공백 여러 칸을 그대로 보여줍니다. */
+  white-space: pre;
+}
+
+.context {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 18px;
+}

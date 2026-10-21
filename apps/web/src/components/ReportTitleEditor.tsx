@@ -2,18 +2,16 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
-import PageHeader from "./PageHeader";
+import Button from "./Button";
+import SectionHeading from "./SectionHeading";
+import styles from "./ReportTitleEditor.module.css";
 
 // 확정한 값과 변경 요청에 사용할 함수를 부모에게 받습니다.
 type ReportTitleEditorProps = {
-  appliedTitle: string;
   onApplyTitle: (title: string) => void;
 };
 
-export default function ReportTitleEditor({
-  appliedTitle,
-  onApplyTitle,
-}: ReportTitleEditorProps) {
+export default function ReportTitleEditor({ onApplyTitle }: ReportTitleEditorProps) {
   // 입력 중인 값과 오류는 이 컴포넌트에서만 필요하므로 그대로 관리합니다.
   const [draftTitle, setDraftTitle] = useState("");
   const [error, setError] = useState("");
@@ -35,31 +33,41 @@ export default function ReportTitleEditor({
   }
 
   return (
-    <>
+    <section aria-labelledby="report-title-heading" className={styles.section}>
+      <SectionHeading id="report-title-heading" number="01" heading="제목" />
+      <p id="report-title-helper" className={styles.helper}>
+        나중에 쉽게 찾을 수 있는 이름을 지어주세요.
+      </p>
+
       {/* 제출 버튼과 Enter 모두 같은 onSubmit 함수를 실행합니다. */}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="report-title">보고서 제목</label>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        {/* 디자인에는 보이는 label이 없으므로 스크린 리더용 label만 둡니다. */}
+        <label htmlFor="report-title" className="visually-hidden">
+          보고서 제목
+        </label>
         <input
           id="report-title"
           type="text"
+          className={styles.input}
+          placeholder="보고서 제목을 입력하세요"
           value={draftTitle}
           onChange={(event) => {
             setDraftTitle(event.target.value);
             setError("");
           }}
           aria-invalid={error !== ""}
-          aria-describedby={error ? "report-title-error" : undefined}
+          aria-describedby={error ? "report-title-helper report-title-error" : "report-title-helper"}
         />
-        <button type="submit">제목 적용</button>
-        {/* 검증에 실패했을 때만 오류를 표시하고 입력창과 연결합니다. */}
-        {error && <p id="report-title-error" role="alert">{error}</p>}
+        <Button type="submit" className={styles.submit}>
+          제목 적용
+        </Button>
       </form>
-
-      {/* 작성 중인 값이 아니라 제출로 확정한 값만 자식에게 전달합니다. */}
-      <PageHeader
-        title={appliedTitle || "제목을 입력하세요"}
-        description="메일을 분석해 보고서를 만드는 공간입니다."
-      />
-    </>
+      {/* 검증에 실패했을 때만 오류를 표시하고 입력창과 연결합니다. */}
+      {error && (
+        <p id="report-title-error" role="alert" className={styles.error}>
+          {error}
+        </p>
+      )}
+    </section>
   );
 }

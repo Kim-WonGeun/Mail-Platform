@@ -1,61 +1,75 @@
 "use client";
 
 import type { ReportTemplate } from "../lib/templateApi";
+import SectionHeading from "./SectionHeading";
+import styles from "./TemplateList.module.css";
+
+// 요청 진행 상태를 하나의 값으로 관리해 화면에 보여줄 내용을 정합니다.
+export type LoadStatus = "loading" | "success" | "error";
 
 // 부모가 목록과 선택 상태를 소유하고, 자식은 받은 값을 그리고 변경할 ID를 함수로 전달합니다.
 type TemplateListProps = {
   templates: ReportTemplate[];
+  loadStatus: LoadStatus;
   selectedTemplateId: string;
   onSelectTemplate: (templateId: string) => void;
 };
 
 export default function TemplateList({
   templates,
+  loadStatus,
   selectedTemplateId,
   onSelectTemplate,
 }: TemplateListProps) {
-  // 이름은 별도 state에 저장하지 않고, ID에 맞는 객체에서 읽습니다.
-  const selectedTemplate = templates.find(
-    (template) => template.id === selectedTemplateId,
-  );
-
   return (
-    <section aria-labelledby="template-list-heading">
-      <h2 id="template-list-heading">보고서 양식</h2>
-      <fieldset>
-        <legend>사용할 양식</legend>
-        <ul>
-        {/* map으로 각 객체를 JSX로 변환하고, 고유한 id를 key로 사용합니다. */}
-        {templates.map((template) => (
-          <li key={template.id}>
-            <label>
-              {/* 같은 name으로 묶고, 현재 선택한 ID와 같을 때만 체크합니다. */}
-              <input
-                type="radio"
-                name="report-template"
-                value={template.id}
-                checked={selectedTemplateId === template.id}
-                onChange={(event) => onSelectTemplate(event.target.value)}
-                aria-describedby={
-                  template.description ? `${template.id}-description` : undefined
-                }
-              />
-              {template.name}
-            </label>
-            {/* API에서 설명은 null일 수 있으므로 값이 있을 때만 표시합니다. */}
-            {template.description && (
-              <p id={`${template.id}-description`}>{template.description}</p>
-            )}
-          </li>
-        ))}
-        </ul>
-      </fieldset>
-      {/* find 결과가 없을 수 있으므로 표시 전에 확인합니다. */}
-      <p role="status">
-        {selectedTemplate
-          ? `선택한 양식: ${selectedTemplate.name}`
-          : "양식을 선택해 주세요."}
-      </p>
+    <section aria-labelledby="template-list-heading" className={styles.section}>
+      <SectionHeading id="template-list-heading" number="02" heading="양식" />
+      <p className={styles.helper}>정리하려는 내용에 맞는 양식을 선택하세요.</p>
+
+      {/* 요청 상태에 따라 안내 문구 또는 양식 목록을 보여줍니다. */}
+      {loadStatus === "loading" && (
+        <p role="status" className={styles.helper}>
+          양식을 불러오는 중입니다.
+        </p>
+      )}
+      {loadStatus === "error" && (
+        <p role="alert" className={styles.error}>
+          양식을 불러오지 못했습니다. API 서버를 확인해 주세요.
+        </p>
+      )}
+      {loadStatus === "success" && (
+        // 각 행은 겉모습만 바꾼 라디오 그룹입니다. 방향키로 선택을 옮길 수 있습니다.
+        <fieldset className={styles.choices}>
+          <legend className="visually-hidden">사용할 양식</legend>
+          {/* map으로 각 객체를 JSX로 변환하고, 고유한 id를 key로 사용합니다. */}
+          {templates.map((template) => {
+            const isSelected = selectedTemplateId === template.id;
+            return (
+              // label이 행 전체를 감싸므로 행 어디를 눌러도 라디오가 선택됩니다.
+              <label key={template.id} className={styles.card}>
+                <input
+                  type="radio"
+                  name="report-template"
+                  className="visually-hidden"
+                  value={template.id}
+                  checked={isSelected}
+                  onChange={(event) => onSelectTemplate(event.target.value)}
+                />
+                {/* 이름과 설명을 왼쪽에, 선택 표시를 오른쪽에 둡니다. */}
+                <span className={styles.cardText}>
+                  <span className={styles.cardTitle}>{template.name}</span>
+                  {/* API에서 설명은 null일 수 있으므로 값이 있을 때만 표시합니다. */}
+                  {template.description && (
+                    <span className={styles.cardDescription}>{template.description}</span>
+                  )}
+                </span>
+                {/* 선택 표시는 CSS가 라디오의 checked 상태를 읽어 그리므로 장식용 span만 둡니다. */}
+                <span className={styles.indicator} aria-hidden="true" />
+              </label>
+            );
+          })}
+        </fieldset>
+      )}
     </section>
   );
 }

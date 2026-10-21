@@ -1,0 +1,92 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.helper {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+.error {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-danger);
+}
+
+/* 행들을 하나의 테두리 상자 안에 세로로 쌓습니다. */
+.choices {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--pw-line);
+  border-radius: var(--pw-radius);
+  overflow: hidden;
+}
+
+/* TemplateRow: 왼쪽 글자 영역은 남은 공간을 모두 쓰고, 오른쪽에 선택 표시를 둡니다. */
+.card {
+  display: flex;
+  align-items: center;
+  gap: var(--pw-space-16);
+  padding: var(--pw-space-12) var(--pw-space-16);
+  background: var(--pw-paper);
+  cursor: pointer;
+}
+
+/* 인접 형제 선택자(+)로 첫 행을 제외한 행 위에만 구분선을 그립니다. */
+.card + .card {
+  border-top: 1px solid var(--pw-line);
+}
+
+.card:hover {
+  background: var(--pw-soft);
+}
+
+/* :has()로 행 안의 라디오 상태를 읽어 행 전체 스타일을 바꿉니다. */
+.card:has(input:checked) {
+  background: var(--pw-selected);
+}
+
+.card:has(input:focus-visible) {
+  outline: var(--pw-stroke-focus) solid var(--pw-focus);
+  outline-offset: -2px;
+}
+
+.cardText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cardTitle {
+  line-height: 22px;
+}
+
+.card:has(input:checked) .cardTitle {
+  font-weight: 500;
+}
+
+.cardDescription {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--pw-muted);
+}
+
+/* 선택 전에는 빈 원, 선택 후에는 안쪽이 흰 점인 채워진 원입니다. */
+.indicator {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--pw-line);
+  border-radius: var(--pw-radius-round);
+  background: var(--pw-paper);
+}
+
+.card:has(input:checked) .indicator {
+  border: 5px solid var(--pw-primary);
+}
