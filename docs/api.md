@@ -28,7 +28,7 @@
 
 ### `GET /api/v1/templates/{id}`
 
-사용 가능한(`ACTIVE`) 양식 하나와 현재 발행 버전의 스키마를 반환합니다.
+양식 하나와 현재 발행 버전의 스키마를 반환합니다. 발행 전(`DRAFT`) 양식도 조회되고, 보관된(`ARCHIVED`) 양식은 조회되지 않습니다.
 
 응답 `200 OK`:
 
@@ -65,4 +65,42 @@
 | --- | --- |
 | `200 OK` | 양식을 찾았습니다. |
 | `400 Bad Request` | `id`가 UUID 형식이 아닙니다. |
-| `404 Not Found` | 양식이 없거나 `ACTIVE`가 아닙니다. |
+| `404 Not Found` | 양식이 없거나 보관(`ARCHIVED`)되었습니다. |
+
+### `POST /api/v1/templates`
+
+새 보고서 양식을 만듭니다.
+
+- 양식은 `DRAFT`(발행 전) 상태로 저장됩니다. 발행하기 전까지 `GET /api/v1/templates` 목록에는 나오지 않습니다.
+- 빌더에서 편집을 시작할 초안 버전이 함께 만들어집니다. 섹션 하나(`section1`)와 필드 하나(`field1`)가 들어 있고, 제목 형식은 양식 이름입니다.
+- 양식 등록 흐름 전체는 [template-registration-design.md](template-registration-design.md)를 참고합니다.
+
+요청:
+
+```json
+{
+  "name": "월간 리포트",
+  "description": "한 달 동안의 메일 정리"
+}
+```
+
+| 필드 | 타입 | 규칙 |
+| --- | --- | --- |
+| `name` | `string` | 필수, 공백만 입력 불가, 150자 이하. 앞뒤 공백은 제거합니다. |
+| `description` | `string` \| `null` | 선택, 1000자 이하. 공백뿐이면 `null`로 저장합니다. |
+
+응답 `201 Created`: `Location` 헤더에 `/api/v1/templates/{id}`, 본문은 목록 항목과 같은 형식입니다. `Location`의 상세 조회는 `version`과 `schema`가 `null`입니다.
+
+응답 `400 Bad Request` (`application/problem+json`):
+
+```json
+{
+  "status": 400,
+  "title": "Bad Request",
+  "detail": "입력값을 확인해 주세요.",
+  "instance": "/api/v1/templates",
+  "errors": {
+    "name": "양식 이름을 입력해 주세요."
+  }
+}
+```

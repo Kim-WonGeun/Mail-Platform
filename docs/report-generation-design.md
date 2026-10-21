@@ -489,6 +489,8 @@ CLAUDE.md의 원칙대로 한 단위씩 끝내고 다음으로 넘어갑니다. 
 4. web 양식 빌더: 섹션 추가/삭제, 필드 추가 (state·이벤트 학습)
 5. draft 저장/발행 API + 빌더 연결
 
+   4~5번의 상세 설계: [template-registration-design.md](template-registration-design.md)
+
 ### 2단계: AI 생성 최소 경로 (자료 붙여넣기)
 
 6. agent: FastAPI 뼈대 + 헬스체크 + Dockerfile/k8s

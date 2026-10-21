@@ -46,6 +46,20 @@ public class ReportTemplateVersion {
     protected ReportTemplateVersion() {
     }
 
+    private ReportTemplateVersion(UUID templateId, JsonNode schemaSnapshot, ReportTemplateVersionOrigin origin) {
+        this.id = UUID.randomUUID();
+        this.templateId = templateId;
+        this.status = ReportTemplateVersionStatus.DRAFT;
+        this.schemaSnapshot = schemaSnapshot;
+        this.origin = origin;
+        // DRAFT는 발행 전이므로 version과 publishedAt을 비워 둡니다. (DB 제약도 같은 규칙을 검사합니다)
+    }
+
+    // 빌더로 편집을 시작할 초안을 만듭니다.
+    public static ReportTemplateVersion draft(UUID templateId, JsonNode schemaSnapshot) {
+        return new ReportTemplateVersion(templateId, schemaSnapshot, ReportTemplateVersionOrigin.BUILDER);
+    }
+
     public UUID getId() {
         return id;
     }
